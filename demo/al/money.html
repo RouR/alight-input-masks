@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Money Spec</title>
+	<script src="modules/alight_0.12.last.debug.js"></script>
+	<script src="alight_money.js"></script>
+	
+</head>
+<body id="app">
+	<form name="form" >
+		<h2>ui-money-mask</h2>
+		<input type="text" name="field14" al-money="defaultMoney" > <br>
+		<span>{{defaultMoney}}</span><br>
+		
+		<input type="text" name="field14" al-money="dec5" money-decimals="5"> <br>
+		<span>{{dec5}}</span><br>
+		
+		<input type="text" name="field14" al-money="custom1" money-decimal-delimiter="/" money-thousands-delimiter=" " money-currency="&:"> <br>
+		<span>{{custom1}}</span><br>
+		
+		 <input al-value="title" type="text" class="form-control" />
+		 <span>{{title}}</span><br>
+		 
+		 <button al-click="setNewValue()">Set new value</button>
+	</form>
+	
+	<script>
+		//$(document).ready(function() {
+
+            var myscope /*change detector*/ = alight.bootstrap(document.querySelector('#app'),
+            {
+				setNewValue: function(){
+					console.log("setNewValue");
+					this.defaultMoney = 33.456;
+					this.dec5 = 33.456;
+				}
+			});
+		//})
+	</script>
+</body>
+</html>
