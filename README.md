@@ -33,9 +33,10 @@
 
 ### Demo ###
 
-_See more usage examples in the [Demo page](http://rour.github.io/angular-input-masks/)_
+_See more usage examples in the [Demo page](http://rour.github.io/alight-input-masks/)_
 
 ### Links ###
 
 Angular Light - http://angularlight.org/
+
 Original directive for AngularJS 1x http://assisrafael.github.io/angular-input-masks/
