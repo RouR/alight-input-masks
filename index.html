@@ -43,6 +43,9 @@
 
 <div ng-app="demo" ng-controller="ctrl">
 <h3>How to use it</h3>
+	
+	
+	<h3>al-money</h3>
 	<h4>Basic usage</h4>
 	<pre><code>&lt;input type="text" name="field14" al-money="defaultMoney"&gt;</code></pre>
 	<form name="formN" ng-init="decimals=2; demoNumber=1234.56">
@@ -57,6 +60,24 @@
 	<form name="formN" ng-init="decimals=2; demoNumber=1234.56">
 	<input type="text" name="field14" al-money="custom1" money-decimal-delimiter="/" money-thousands-delimiter=" " money-currency="&:"> <br>
 	<span>Model value: {{custom1}}</span>
+	</form>	
+	
+	<hr>
+	<h3>al-money2</h3>
+	<h4>Basic usage</h4>
+	<pre><code>&lt;input type="text" name="field14" al-money2="money2"&gt;</code></pre>
+	<form name="formN" ng-init="decimals=2; demoNumber=1234.56">
+	<input type="text" name="field14" al-money2="money2" > <br>
+	<span>Model value: {{money2}}</span>
+	</form>
+	
+	<h4>Extended usage</h4>
+	<pre><code>&lt;input type="text" name="field14" al-money2="money2ext" 
+	money-decimal-delimiter="/" money-thousands-delimiter=" " 
+	money-currency="&:"&gt;</code></pre>
+	<form name="formN" ng-init="decimals=2; demoNumber=1234.56">
+	<input type="text" name="field14" al-money2="money2ext" money-decimal-delimiter="/" money-thousands-delimiter=" " money-currency="&:"> <br>
+	<span>Model value: {{money2ext}}</span>
 	</form>	
 	
 	<button al-click="setNewValue()">Set new value</button>
@@ -80,6 +101,8 @@
 					console.log("setNewValue");
 					this.defaultMoney = Math.random()*100000;
 					this.custom1 = Math.random()*1000000000;
+					this.money2 = Math.random()*1000000000;
+					this.money2ext = Math.random()*1000000000;
 				}
 			});
 	</script>
