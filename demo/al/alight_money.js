@@ -88,6 +88,105 @@ alight.d.al.money = {
   }
 };
 
+alight.d.al.money2 = {
+  priority: 20,
+  link: function(directiveScope, element, variable, env) {
+    var self;
+
+    var decimalDelimiter = env.takeAttr('money-decimal-delimiter') ||",",
+        thousandsDelimiter = env.takeAttr('money-thousands-delimiter') || ".",
+        currencySym = env.takeAttr('money-currency') ||"$",
+        symbolSeparation = ' ',
+        decimals = env.takeAttr('money-decimals') || 2,
+        allowNegativeNumber = false;
+
+    decimals = parseInt(decimals);
+    
+    function maskFactory(decimals) {
+      var decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
+      var maskPattern = symbolSeparation + '#' + thousandsDelimiter + '##0' + decimalsPattern;
+      return new StringMask(maskPattern, {reverse: true});
+    }
+
+    var moneyMask = maskFactory(decimals);
+
+    function clearDelimitersAndLeadingZeros(value) {
+      if (value === '0') {
+        return '0';
+      }
+
+      var cleanValue = value.replace(/^-/,'').replace(/^0*/, '');
+      return cleanValue.replace(/[^0-9]/g, '');
+    }
+
+    function prepareNumberToFormatter(value, decimals) {
+      return clearDelimitersAndLeadingZeros((parseFloat(value)).toFixed(decimals));
+    }
+
+    var parser = function (value) {
+      var actualNumber = value.replace(/[^\d]+/g,'');
+      actualNumber = actualNumber.replace(/^[0]+([1-9])/,'$1');
+      actualNumber = actualNumber || '0';
+      var formatedValue = currencySym + moneyMask.apply(actualNumber);
+
+      return formatedValue ? parseInt(formatedValue.replace(/[^\d\-]+/g,''))/Math.pow(10,decimals) : null;
+    }
+
+    var formatter = function (value) {
+      var prefix = (allowNegativeNumber && value < 0) ? '-' : '';
+      var valueToFormat = prepareNumberToFormatter(value, decimals);
+      return  currencySym  + prefix + moneyMask.apply(valueToFormat);
+    }
+
+    return self = {
+      onDom: function() {   
+		alight.f$.on(element, 'focus',self.onFocus);
+        alight.f$.on(element, 'blur', self.offFocus);
+        directiveScope.$watch('$destroy', self.offDom);
+      },
+      offDom: function() {
+		alight.f$.off(element, 'focus',self.onFocus);
+        alight.f$.off(element, 'blur', self.offFocus);
+      },
+	  onFocus: function() {
+		element.value = parser(element.value);
+		if(element.value === '0') element.value='';
+        //console.log('onFocus', element.value);
+      },
+	  offFocus: function() {
+		element.value = formatter(element.value);
+        //console.log('offFocus', element.value);
+		self.updateModel();
+      },
+      updateModel: function() {
+        var moneyValue = parser(element.value);
+        //console.log('set', moneyValue);
+        element.value = formatter(moneyValue);
+        directiveScope.$setValue(variable, moneyValue);
+        self.watch.refresh();
+        directiveScope.$scan();
+      },
+      watchModel: function() {
+        self.watch = directiveScope.$watch(variable, self.updateDom);
+      },
+      updateDom: function(value) {
+        if (value == null) {
+          value = '';
+        }
+        value = formatter(value);
+        //console.log('display', value);
+        element.value = value;
+        self.updateModel(value);
+        return '$scanNoChanges';
+      },
+      start: function() {
+        self.onDom();
+        self.watchModel();
+      }
+    };
+  }
+};
+
 
 (function(root, factory) {
   /* istanbul ignore next */
