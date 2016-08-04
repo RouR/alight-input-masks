@@ -13,6 +13,8 @@
 
 ## How to use
 
+## al-money
+
  - Example:
 
 ```html
@@ -30,6 +32,16 @@
 ```html
 <input type="text" name="field14" al-money="custom1" money-decimals="1" money-decimal-delimiter="/" money-thousands-delimiter=" " money-currency="&:">
 ```
+
+## al-money2
+
+
+- Extended example:
+
+```html
+<input type="text" name="field14" al-money2="custom1" money-decimals="1" money-decimal-delimiter="/" money-thousands-delimiter=" " money-currency="&:">
+```
+
 
 ### Demo ###
 
